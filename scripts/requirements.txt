@@ -1,0 +1,4 @@
+# Dependencies for shadow_dump.py (Phase 1 capture tool).
+# Standalone — no Home Assistant required.
+requests>=2.31
+paho-mqtt>=2.1

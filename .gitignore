@@ -1,0 +1,35 @@
+# Secrets / credentials — never commit
+.env
+*.env
+!.env.example
+scripts/.tokens.json
+scripts/.jwt.txt
+scripts/.otp_vtoken
+.oma_*.tmp
+*_url.tmp
+*_cid.tmp
+
+# Raw captures contain the device's AWS IoT thingName, live SigV4 WSS URLs and
+# other identifiers. The sanitized property map (notes/properties.md) is the
+# shareable artifact.
+captures/
+
+# RE tooling + artifacts — decompiled APK, Frida scripts, analysis DBs. Never
+# published: see README/disclaimer (extraction logic ships, the APK/its
+# contents never do).
+apk/
+methodb/
+*.apk
+*.apkm
+*.xapk
+*.dex
+*.db
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Upstream reference clones (read-only; not part of this project's history)
+vendor/

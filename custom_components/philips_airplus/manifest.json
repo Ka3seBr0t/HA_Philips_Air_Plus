@@ -1,0 +1,11 @@
+{
+  "domain": "philips_airplus",
+  "name": "Philips Air+",
+  "version": "0.2.0",
+  "documentation": "https://github.com/Ka3seBr0t/HA_Philips_Air_Plus",
+  "issue_tracker": "https://github.com/Ka3seBr0t/HA_Philips_Air_Plus/issues",
+  "codeowners": ["@Ka3seBr0t"],
+  "config_flow": true,
+  "iot_class": "cloud_push",
+  "requirements": ["paho-mqtt>=2.1,<3"]
+}
