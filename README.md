@@ -1,6 +1,10 @@
 # Philips Air+ (CX3550/01) for Home Assistant
 
+🇬🇧 English | [🇩🇪 Deutsch](README.de.md)
+
 <img src="https://raw.githubusercontent.com/Ka3seBr0t/HA_Philips_Air_Plus/main/brand/logo.png" alt="Philips Air+ integration icon" width="96" height="96">
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Ka3seBr0t&repository=HA_Philips_Air_Plus&category=integration)
 
 A Home Assistant custom integration for **Philips Air+ cloud-only fans**,
 verified against the **CX3550/01** ("Series 3000" stand fan, Air Matters app).
@@ -41,9 +45,10 @@ for the (tiny, dependency-free) extraction logic.
 
 ### 1. Install via HACS
 
-Add this repository as a custom repository in HACS, or copy
-`custom_components/philips_airplus/` into your HA `config/custom_components/`
-folder. Restart Home Assistant.
+Click the "Open in HACS" badge above (adds this repository to HACS
+automatically), then install "Philips Air+" from HACS. Or add it manually as
+a HACS custom repository, or copy `custom_components/philips_airplus/` into
+your HA `config/custom_components/` folder. Restart Home Assistant.
 
 ### 2. Add the integration
 
@@ -74,14 +79,15 @@ captures.
 |---|---|---|
 | Fan | `fan` | on/off, speed 1/2/3 (percentage), presets **sleep** / **natural**, oscillate |
 | Key beep | `switch` | key-tone on/off (config) |
-| Timer | `switch` | auto-off timer activate (config) |
+| Timer | `switch` | auto-off timer on/off (config) |
+| Timer duration | `number` | auto-off timer length, 0–12 h (config) |
 | Timer remaining | `sensor` | countdown minutes (read-only) |
 | Signal strength | `sensor` | WiFi RSSI dBm (diagnostic, off by default) |
 | Uptime | `sensor` | device runtime seconds (diagnostic, off by default) |
 | Free memory | `sensor` | free heap bytes (diagnostic, off by default) |
 
 All control writes are verified against a physical CX3550/01: power, speed
-1/2/3, sleep/natural presets, oscillate, beep, timer-activate.
+1/2/3, sleep/natural presets, oscillate, beep, timer on/off and duration.
 
 ## Troubleshooting
 

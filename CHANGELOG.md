@@ -5,6 +5,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-07-04
+
 ### Added
 - **12-hour auto-off timer** via a new `number` entity ("Timer duration",
   0–12 h). The duration is encoded directly in `D03110` as `hours + 1`
@@ -15,9 +17,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `number` entity sets the length; the read-only remaining-minutes sensor is
   unchanged.
 - `brand/` folder: `icon.png`/`icon@2x.png`/`logo.png`/`logo@2x.png`
-  (256²/512², transparent background) plus the original `source.png`,
-  ready for an eventual `home-assistant/brands` submission. Root README now
-  shows the logo.
+  (256²/512², transparent background) plus the original `source.png`. Shown
+  at repo root for the README logo, and duplicated into
+  `custom_components/philips_airplus/brand/` so the icon shows up directly
+  in the Home Assistant UI (local brand images, supported since HA 2026.3.0
+  — no `home-assistant/brands` submission needed).
+- German README (`README.de.md`) alongside the English one, with a
+  language-switcher link at the top of each.
+- "Open in HACS" badge in the README for one-click repository setup.
 
 ### Changed
 - Fan `preset_mode` display is now localized via `translation_key` — shows
