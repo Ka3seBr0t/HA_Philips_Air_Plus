@@ -22,7 +22,7 @@ Philips *air-matters / gaoda* signed auth chain.
 | Uptime | `sensor` | device runtime seconds (diagnostic, off by default) |
 | Free memory | `sensor` | free heap bytes (diagnostic, off by default) |
 
-All control writes are **verified against the physical fan** (2026-06-27):
+All control writes are **verified against a physical fan** (2026-06-27):
 power, speed 1/2/3, sleep (D0310C=17), natural (D0310C=130), oscillate
 (D0320F), beep (D03130), timer-activate (D03110). The timer-remaining field
 (D03211) is read-only (the device sets it; writes are ignored).

@@ -1,6 +1,6 @@
 # Befund: Die CX3550-Lüfter nutzen eine NEUERE Cloud-Architektur
 
-Stand 2026-06-26. Quelle: Pi-hole-DNS-Log (v6) von `192.0.2.1` + direkte
+Stand 2026-06-26. Quelle: Pi-hole-DNS-Log (v6) vom lokalen Pi-hole + direkte
 Endpunkt-Tests mit dem Air+-Gigya-Token.
 
 ## Kernaussage
@@ -24,7 +24,7 @@ Hosts, die die Air+-App / die Geräte real ansprechen (vorher nie probiert):
 | `cognito-identity.eu-west-1.amazonaws.com` | **AWS Cognito** Identity Pool | App tauscht Gigya→AWS-Credentials |
 | `www.api.air.philips.com` | Philips-Air Geräte-API (Cloudflare) | 404 auf geratene Pfade (Pfad unbekannt) |
 | `prod.global-da.iot.versuni.com` | Geräte-**Bootstrap** (`/configuration`) | 400 „URI does not contain '/configuration'" |
-| `a2gv4wmvb0sdt5-ats.iot.eu-central-1.amazonaws.com` | rohes **AWS IoT eu-central-1** | von `192.0.2.2` angefragt (Geräte-Broker) |
+| `a2gv4wmvb0sdt5-ats.iot.eu-central-1.amazonaws.com` | rohes **AWS IoT eu-central-1** | von einem Gerät im lokalen Netz angefragt (Geräte-Broker) |
 
 Tenant-Test auf dem eu-da-Host:
 - `/api/da/user/self/device` → `200 []`  (mein Token gilt, aber 0 Geräte)

@@ -41,10 +41,10 @@ Baustein ist der gerätespezifische `thingName` (`da-<uuid>`) + die Property-Map
 
 ### 4. Werkzeuge vorbereitet
 - **platform-tools** aus `Downloads/platform-tools-latest-windows.zip` entpackt nach
-  `C:\Users\user\platform-tools\` (enthält `adb.exe` v1.0.41 / 37.0.0).
+  `C:\Users\<du>\platform-tools\` (enthält `adb.exe` v1.0.41 / 37.0.0).
 - Ordner **dauerhaft zum Benutzer-PATH** hinzugefügt, damit HTTP Toolkit adb findet.
 - Handy per USB verbunden, USB-Debugging aktiviert, ADB-Autorisierungs-Popup bestätigt:
-  - `adb devices -l` → `SERIAL0000  device  product:m3qxeea model:SM-S948B ...`
+  - `adb devices -l` → `<serial>  device  product:m3qxeea model:SM-S948B ...`
   - (vorher: `unauthorized` → nach Bestätigung: `device`).
 
 ### 5. HTTP Toolkit verbinden — OFFEN / blockiert
@@ -89,4 +89,4 @@ Baustein ist der gerätespezifische `thingName` (`da-<uuid>`) + die Property-Map
 - Method-B-Tools: `methodb/mitm_capture.py`, `methodb/extract_things.py`,
   `methodb/frida_unpin.js`
 - Capture-Landing: `captures/raw_shadow.jsonl` (noch nicht vorhanden)
-- ADB: `C:\Users\user\platform-tools\adb.exe`
+- ADB: `C:\Users\<du>\platform-tools\adb.exe`

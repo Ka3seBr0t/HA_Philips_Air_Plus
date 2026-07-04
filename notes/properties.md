@@ -1,13 +1,13 @@
 # CX3550/01 — Property-Map (Phase 2, Stand 2026-06-27)
 
 Quelle: **echter, vom AWS-IoT-Broker gelesener Shadow** (Mitschnitt der
-`$aws/things/<id>/shadow/get/accepted`-MQTT-Nachricht für „Fan1",
+`$aws/things/<id>/shadow/get/accepted`-MQTT-Nachricht für einen der beiden Lüfter,
 `device_id <device_id>`). Geknackt per frida-interceptierter
 `mqttInfo`-URL (pre-signed SigV4 WSS) → paho connect → `shadow/get`. Siehe
 `captures/raw_shadow.jsonl` für den Rohmitschnitt und `notes/architecture.md`
 für die Cloud-Architektur.
 
-Beide Geräte („Fan1", „Fan2") sind `CX3550/01` (type `Trident`,
+Beide Geräte (hier „Fan1"/„Fan2" genannt) sind `CX3550/01` (type `Trident`,
 swversion `0.1.7`) → gleiche D-Code-Schema. Ein Shadow-Read pro Modell reicht.
 
 ## 1. Verifizierte Architektur (alle 4 unknowns aus `finding_fan_architecture.md` geklärt)
@@ -62,12 +62,12 @@ selbst holen — siehe `notes/auth_refresh.md`.
 
 ### Gesichert (aus Cross-Reference mit der AC0650-Referenz-Config + Wert-Semantik)
 
-| D-Code | Bedeutung | Wert (Oma) | Nachweis |
+| D-Code | Bedeutung | Wert (Fan1) | Nachweis |
 |---|---|---|---|
 | `D01S03` | device name / alias | `"Fan1"` | String = Gerätename aus App |
 | `D01S04` | device type | `"Trident"` | String = interner Typ |
 | `D01S05` | model / CTN | `"CX3550/01"` | String = Modellnummer |
-| `D01S0D` | Seriennummer / device-id-Suffix | `"000000000000"` | String, MAC-nah (`mac` in deviceList = `AABBCCDDEEFF`) |
+| `D01S0D` | Seriennummer / device-id-Suffix | `"000000000000"` | String, MAC-nah (`mac` in deviceList, gleiches Format) |
 | `D01S12` | firmware / swversion | `"0.1.7"` | String = `swversion` aus deviceList |
 | `D0310C` | **fan speed / mode** | `2` | AC0650-Config: `fan_speed`+`mode` = `D0310C`; läuft auf Stufe 2 |
 | `D0310D` | **power / fan level** | `2` | AC0650-Config: `power`+`fan_level` = `D0310D`; 0=off… |
@@ -85,7 +85,7 @@ Diese Codes hat ein einzelner Shadow-Read geliefert, aber ihre Semantik ist
 ändert und zuschaut, welcher Code sich ändert (der Sweep, der 2026-06-27 am
 429-Rate-Limit scheiterte):
 
-| D-Code | Wert (Oma) | Verdachts-Bedeutung (zu verifizieren) |
+| D-Code | Wert (Fan1) | Verdachts-Bedeutung (zu verifizieren) |
 |---|---|---|
 | `D01102` | `2` | ? (D01xx = Gerätemeta-Bereich) — nicht nutzersteuerbar |
 | `D01107` | `0` | ? — nicht nutzersteuerbar |

@@ -17,7 +17,7 @@ CONF_DEVICES = "devices"  # optional explicit device ids; auto-discovered if abs
 # Defaults / limits
 JWT_REFRESH_MARGIN = 24 * 3600  # refresh the 7-day JWT when <1 day remains
 
-# ---- D-code property map (verified against CX3550/01 "Fan1" 2026-06-27) ----
+# ---- D-code property map (verified against a physical CX3550/01, 2026-06-27) ----
 # Shadow reported/desired codes. See notes/properties.md §3e.
 D_POWER = "D03102"        # power flag  0=off / 1=on
 D_SPEED = "D0310D"        # fan level   0..3  (manual speed)
