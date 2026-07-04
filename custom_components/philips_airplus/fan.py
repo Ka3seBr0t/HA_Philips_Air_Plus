@@ -73,6 +73,7 @@ class PhilipsAirplusFan(CoordinatorEntity, FanEntity):
 
     _attr_has_entity_name = True
     _attr_name = None  # use the device name
+    _attr_translation_key = "cx3550"  # localizes preset_mode display, see strings.json
     _attr_speed_count = SPEED_COUNT
     _attr_preset_modes = PRESET_MODES
 
@@ -102,7 +103,7 @@ class PhilipsAirplusFan(CoordinatorEntity, FanEntity):
 
     @property
     def available(self) -> bool:
-        return self.coordinator.connected
+        return self.coordinator.device_available
 
     # ---- state ----
     def _rep(self) -> dict:

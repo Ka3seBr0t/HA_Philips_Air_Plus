@@ -12,6 +12,8 @@ import logging
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
+from .const import D_CONNECT_TYPE
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -34,6 +36,25 @@ class PhilipsAirplusCoordinator(DataUpdateCoordinator):
     async def async_update_data(self) -> dict:
         """Return the latest reported state (set by the push path, not by polling)."""
         return self.data
+
+    @property
+    def device_available(self) -> bool:
+        """Whether entities should show as available.
+
+        ``connected`` only means our own MQTT socket reached the AWS IoT
+        broker — that succeeds even when the physical fan itself is offline
+        (WiFi down, unplugged). Once a shadow read has arrived, defer to its
+        ``ConnectType`` field (the device's own reported connectivity,
+        confirmed maintained server-side — it's the same signal the Philips
+        app shows "not available" from). Before the first read, fall back to
+        the socket state so entities don't flicker unavailable while it
+        arrives (typically under a second after connect).
+        """
+        if not self.connected:
+            return False
+        if not self.data:
+            return True
+        return self.data.get(D_CONNECT_TYPE) == "Online"
 
     # ---- push entry point (called from the HA loop by DeviceConnection) ----
     def threadsafe_set_data(self, reported: dict) -> None:

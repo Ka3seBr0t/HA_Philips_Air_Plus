@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Philips Air+ — APK",
-        "description": "Dieser Lüfter funktioniert nur über Philips' clientseitig signierte Cloud-API, die einen kleinen Signierwert (`mSecret`) braucht, der ausschließlich in der Philips-Air+-App selbst steckt — Philips gibt ihn auf keinem anderen Weg heraus. Er wird lokal aus deiner eigenen APK extrahiert und verlässt diese Home-Assistant-Instanz nie, wird nirgendwo veröffentlicht.\n\nBesorge die APK für `com.philips.ph.homecare` (\"Philips Air+\"), z.B. von https://www.apkmirror.com oder https://apkpure.com (Suche \"Philips Air+\"), oder ziehe sie vom eigenen Handy per `adb pull`. Dann die Datei unten hochladen.",
+        "description": "Dieser Lüfter funktioniert nur über Philips' clientseitig signierte Cloud-API, die einen kleinen Signierwert (`mSecret`) braucht, der ausschließlich in der Philips-Air+-App selbst steckt — Philips gibt ihn auf keinem anderen Weg heraus. Er wird lokal aus deiner eigenen APK extrahiert, verlässt diese Home-Assistant-Instanz nie und wird nirgendwo veröffentlicht.\n\nBesorge die APK für `com.philips.ph.homecare` (\"Philips Air+\"): https://www.apkmirror.com/apk/versuni-netherlands-b-v/philips-air/philips-air-3-19-0-release/ (Direktlink zur aktuellen Version, Juni 2026 — falls das später 404 gibt, hat Philips eine neue Version veröffentlicht: dann https://www.apkmirror.com/apk/versuni-netherlands-b-v/philips-air/ nutzen), oder ziehe sie vom eigenen Handy per `adb pull` für die vertrauenswürdigste Quelle. Dann die Datei unten hochladen.",
         "data": {
           "apk_file": "Philips-Air+-APK-Datei (.apk / .apkm / .xapk)"
         }
@@ -38,6 +38,18 @@
     }
   },
   "entity": {
+    "fan": {
+      "cx3550": {
+        "state_attributes": {
+          "preset_mode": {
+            "state": {
+              "sleep": "Schlafen",
+              "natural": "Natürliche Brise"
+            }
+          }
+        }
+      }
+    },
     "switch": {
       "beep": { "name": "Piepton" },
       "timer": { "name": "Timer" }

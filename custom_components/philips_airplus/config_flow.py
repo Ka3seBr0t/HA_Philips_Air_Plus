@@ -71,7 +71,7 @@ class PhilipsAirplusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self._msecret: str | None = None
         self._email: str | None = None
         self._vtoken: str | None = None
-        self._reauth_entry_id: str | None = None
+        self._philips_reauth_id: str | None = None
 
     # ---- step 1: APK upload -> mSecret ---------------------------------
     async def async_step_user(
@@ -148,8 +148,8 @@ class PhilipsAirplusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     CONF_MSECRET: self._msecret,
                     CONF_EMAIL: self._email,
                 }
-                if self._reauth_entry_id:
-                    entry = self.hass.config_entries.async_get_entry(self._reauth_entry_id)
+                if self._philips_reauth_id:
+                    entry = self.hass.config_entries.async_get_entry(self._philips_reauth_id)
                     if entry is None:
                         return self.async_abort(reason="reauth_missing")
                     self.hass.config_entries.async_update_entry(entry, data=entry_data)
@@ -177,7 +177,7 @@ class PhilipsAirplusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         entry = self.hass.config_entries.async_get_entry(self.context["entry_id"])  # type: ignore[index]
         if entry is None:
             return self.async_abort(reason="reauth_missing")
-        self._reauth_entry_id = entry.entry_id
+        self._philips_reauth_id = entry.entry_id
         msecret = entry.data.get(CONF_MSECRET)
         if msecret:
             # APK constants essentially never rotate — skip straight to email+OTP.

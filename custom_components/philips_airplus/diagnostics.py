@@ -45,6 +45,7 @@ async def async_get_config_entry_diagnostics(
             {
                 "device_id": device_id,
                 "connected": coordinator.connected,
+                "device_available": coordinator.device_available,
                 "device_info": async_redact_data(coordinator.device_info or {}, {"mac"}),
                 "reported": async_redact_data(coordinator.data or {}, TO_REDACT_REPORTED),
             }

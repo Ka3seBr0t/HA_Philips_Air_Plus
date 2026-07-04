@@ -63,7 +63,7 @@ class _AirplusSwitch(CoordinatorEntity, SwitchEntity):
 
     @property
     def available(self) -> bool:
-        return self.coordinator.connected
+        return self.coordinator.device_available
 
     def _rep(self) -> dict:
         return self.coordinator.data or {}

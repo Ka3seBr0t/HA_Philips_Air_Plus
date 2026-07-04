@@ -47,10 +47,12 @@ Home Assistant.
 1. **Upload the Philips Air+ APK** (`com.philips.ph.homecare`). The
    integration extracts the gaoda signing value (`mSecret`) from it locally —
    see [`apk_extract.py`](apk_extract.py) — and never stores or transmits the
-   APK itself. Any source works (own device via `adb pull`, APKMirror,
-   APKPure); the signing value is identical across app versions/regions. See
-   the repo root [README](../../README.md) for details on why this step
-   exists at all.
+   APK itself. Any source works (own device via `adb pull`, or
+   [APKMirror, v3.19.0](https://www.apkmirror.com/apk/versuni-netherlands-b-v/philips-air/philips-air-3-19-0-release/) —
+   [app overview](https://www.apkmirror.com/apk/versuni-netherlands-b-v/philips-air/)
+   if that's since gone stale); the signing value is identical across app
+   versions/regions. See the repo root [README](../../README.md) for details
+   on why this step exists at all.
 2. **Enter your Philips account email** — triggers an emailed 6-digit code.
 3. **Enter the code.** The integration derives your account's gaoda
    `user_id` from the login response (see
@@ -79,5 +81,7 @@ and only asks for a fresh email code.
   connection with the same client identity, AWS IoT disconnects one (rc 128);
   the integration backs off and reconnects, but the app will keep fighting it.
 - The 7-day JWT is refreshed automatically when <1 day remains; no interaction.
-- If auth ever fails (e.g. user_id revoked), the integration raises a reauth
-  flow — re-enter the `user_id` in the UI.
+- If auth ever fails (e.g. account revoked), the integration raises a reauth
+  flow — you'll only be asked for a fresh email code (the stored signing
+  value is reused; only very old entries from before v0.2.0 also need the
+  APK step again).

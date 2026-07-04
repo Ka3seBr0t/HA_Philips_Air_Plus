@@ -1,5 +1,7 @@
 # Philips Air+ (CX3550/01) for Home Assistant
 
+<img src="brand/logo.png" alt="Philips Air+ integration icon" width="96" height="96">
+
 A Home Assistant custom integration for **Philips Air+ cloud-only fans**,
 verified against the **CX3550/01** ("Series 3000" stand fan, Air Matters app).
 These fans have no local API — they're controlled via an AWS IoT device
@@ -51,11 +53,14 @@ folder. Restart Home Assistant.
    work — the signing value is the same across app versions/regions:
    - **Cleanest / most trustworthy:** pull it from your own phone —
      `adb shell pm path com.philips.ph.homecare` then `adb pull <path>`.
-   - **Convenience:** download it from [APKMirror](https://www.apkmirror.com)
-     or [APKPure](https://apkpure.com) (search "Philips Air+") in your
-     browser. The integration only reads text strings out of the file — it
-     never executes it — but your own device is still the most trustworthy
-     source.
+   - **Convenience:** download it from
+     [APKMirror, version 3.19.0](https://www.apkmirror.com/apk/versuni-netherlands-b-v/philips-air/philips-air-3-19-0-release/)
+     (June 2026) in your browser. If that link 404s by the time you read
+     this, Philips has shipped a newer version — use the
+     [app overview page](https://www.apkmirror.com/apk/versuni-netherlands-b-v/philips-air/)
+     instead, which always lists whatever is current. The integration only
+     reads text strings out of the file — it never executes it — but your
+     own device is still the most trustworthy source.
 2. **Enter your Philips account email.** You'll get a 6-digit code by email.
 3. **Enter the code.** The integration signs in, discovers your bound
    devices, and creates the entry.
