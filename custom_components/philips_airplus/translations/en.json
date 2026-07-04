@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Philips Air+ — APK",
-        "description": "This fan only works via Philips' client-signed cloud API, which needs a small signing value (`mSecret`) that only lives inside the Philips Air+ app itself — Philips does not hand it out any other way. It is extracted locally from your own APK and never leaves this Home Assistant instance or gets published anywhere.\n\nGet the APK for `com.philips.ph.homecare` (\"Philips Air+\"): https://www.apkmirror.com/apk/versuni-netherlands-b-v/philips-air/philips-air-3-19-0-release/ (direct link to the current version, June 2026 — if this 404s later, Philips has shipped a new one: use https://www.apkmirror.com/apk/versuni-netherlands-b-v/philips-air/ instead), or pull it from your own phone with `adb pull` for the most trustworthy source. Then upload the file below.",
+        "description": "This fan only works via Philips' client-signed cloud API, which needs a small signing value (`mSecret`) that only lives inside the Philips Air+ app itself — Philips does not hand it out any other way. It is extracted locally from your own APK and never leaves this Home Assistant instance or gets published anywhere.\n\nGet the APK for `com.philips.ph.homecare` (\"Philips Air+\") — pulling it from your own phone with `adb pull` is the most trustworthy source. A direct download link is in the repository README if you'd rather use a mirror. Then upload the file below.",
         "data": {
           "apk_file": "Philips Air+ APK file (.apk / .apkm / .xapk)"
         }
