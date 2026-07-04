@@ -5,6 +5,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-07-04
+
+### Added
+- HACS Action + hassfest CI validation (`.github/workflows/validate.yaml`),
+  required for eventual `hacs/default` submission.
+
+### Fixed
+- `manifest.json` keys weren't alphabetically sorted (hassfest requirement:
+  `domain`/`name` first, then alphabetical).
+- Config flow description embedded raw URLs, which hassfest's translation
+  linter rejects. Points to the README instead.
+
 ## [0.3.0] - 2026-07-04
 
 ### Added
