@@ -219,6 +219,40 @@ spiegelt via `reported`.
 Status. (Früherer control_test „Beweis" mit Schreib 23040 war ein
 Fehlschluss — damals vermutlich schon an.)
 
+### 3g. Timer-Dauer geknackt: `D03110` = Stunden + 1 (2026-07-04)
+
+`D03110` ist **nicht** nur ein An/Aus-Flag — der Wert kodiert die Timer-Dauer
+direkt: **`D03110` = Stunden + 1** (0 = aus). Per Direct-Write am Fan1-Lüfter
+verifiziert (kein App-Roundtrip nötig); `D03211` (Restminuten, read-only) folgt
+als `60·(D03110−1)`:
+
+| write `D03110` | reported `D03211` | = Dauer |
+|---|---|---|
+| 0  | 0    | aus |
+| 2  | 60   | 1 h |
+| 4  | 180  | 3 h |
+| 6  | 300  | 5 h |
+| 12 | 660  | 11 h |
+| **13** | **720** | **12 h** ✅ |
+| 24 | 1380 | 23 h (Firmware erlaubt mehr; App kappt bei 12 h) |
+
+- `D03110 = 1` ist out-of-range → Gerät coerced auf `2`. Gültige An-Codes: 2..13.
+- Deshalb konnte die alte Integration nur „1 h": ihr `TIMER_ON = 2` **ist** exakt
+  1 h. Der frühere Befund „Gerät setzt beim Aktivieren selbst auf 60" war nur der
+  Sonderfall Stunden = 1.
+- `D03105` sprang bei Aktivierung 0→100, ist aber **kein** sauberer Indikator
+  (blieb 100 auch nach `D03110=0`) → für den Timer irrelevant.
+
+→ HA: neues `number` „Timer duration" (0–12 h) schreibt `D03110 = h+1` (0→0),
+liest `h = D03110−1`. Der Timer-**Switch** liest jetzt `!= 0` (nicht `== 2`),
+damit er bei jeder Dauer „an" zeigt. `D03211`-Sensor unverändert.
+
+**Gotcha (HA-Deploy):** Ein Config-Entry-**Reload** reicht NICHT, um neue
+Platforms / geänderte Module dieser Custom-Integration zu laden — die
+Python-Module bleiben in `sys.modules` gecacht (die alte `PLATFORMS`-Liste ohne
+`number` läuft weiter, ganz ohne Import-Error). Es braucht einen **vollen
+HA-Neustart**.
+
 1. **Funktions-Sweep neu laufen lassen** (das eigentliche Ziel): frische
    `mqttInfo`-URL besorgen (frida-Mitschnitt, 1h gültig) → mitschreibende
    Verbindung (`methodb/connect_shadow.py`) → am Lüfter je eine Funktion ändern

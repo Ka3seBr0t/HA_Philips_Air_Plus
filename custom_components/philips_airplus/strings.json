@@ -59,6 +59,9 @@
       "rssi": { "name": "Signal strength" },
       "runtime": { "name": "Uptime" },
       "free_memory": { "name": "Free memory" }
+    },
+    "number": {
+      "timer_hours": { "name": "Timer duration" }
     }
   }
 }

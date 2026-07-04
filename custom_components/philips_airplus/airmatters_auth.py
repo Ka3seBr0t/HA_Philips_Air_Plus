@@ -160,10 +160,17 @@ def get_mqtt_info(jwt: str, device_ids) -> dict:
         except Exception:  # noqa: BLE001
             time.sleep(2.0)
             continue
-        if data.get("meta", {}).get("code") == 0:
+        meta = data.get("meta", {})
+        if meta.get("code") == 0:
             return {mi["device_id"]: mi for mi in data["data"]["mqttinfos"]}
+        # 16002 "Not binding to the device" is intermittently returned even for
+        # correctly-bound devices (deviceList confirms the binding); it clears on
+        # retry, so treat it as transient like a 503 rather than a hard failure.
+        if meta.get("code") == 16002:
+            time.sleep(2.0)
+            continue
         raise RuntimeError(f"mqttInfo failed: {status} {txt[:200]}")
-    raise RuntimeError("mqttInfo exhausted retries (persistent 503?)")
+    raise RuntimeError("mqttInfo exhausted retries (persistent 503/16002?)")
 
 
 def jwt_exp(jwt: str) -> int:

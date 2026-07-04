@@ -23,7 +23,7 @@ from .device_connection import DeviceConnection
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = ["fan", "switch", "sensor"]
+PLATFORMS = ["fan", "switch", "sensor", "number"]
 
 
 class PhilipsAirplusData:

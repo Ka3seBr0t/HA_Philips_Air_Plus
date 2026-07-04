@@ -106,7 +106,9 @@ class PhilipsAirplusTimerSwitch(_AirplusSwitch):
 
     @property
     def is_on(self) -> bool:
-        return self._int(D_TIMER_ACT) == TIMER_ON
+        # Any non-zero D03110 = timer running (2=1h .. 13=12h); the Number entity
+        # sets the duration, so match on != off rather than the 1h default value.
+        return self._int(D_TIMER_ACT) != TIMER_OFF
 
     async def async_turn_on(self, **kwargs) -> None:
         await self.coordinator.async_set_desired({D_TIMER_ACT: TIMER_ON})

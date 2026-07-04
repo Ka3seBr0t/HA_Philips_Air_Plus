@@ -33,7 +33,7 @@
     },
     "abort": {
       "already_configured": "Dieses Konto ist bereits konfiguriert.",
-      "reauth_successful": "Neu-Authentifizierung erfolgreich.",
+      "reauth_successful": "Erneute Authentifizierung war erfolgreich.",
       "reauth_missing": "Der Konfigurationseintrag konnte nicht gefunden werden."
     }
   },
@@ -59,6 +59,9 @@
       "rssi": { "name": "Signalstärke" },
       "runtime": { "name": "Laufzeit" },
       "free_memory": { "name": "Freier Speicher" }
+    },
+    "number": {
+      "timer_hours": { "name": "Timer-Dauer" }
     }
   }
 }

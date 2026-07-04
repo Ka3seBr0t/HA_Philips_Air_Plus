@@ -24,7 +24,7 @@ D_SPEED = "D0310D"        # fan level   0..3  (manual speed)
 D_MODE = "D0310C"         # mode preset 1/2/3=stufe, 17=sleep, 130=natural (echoes -126)
 D_OSCILLATE = "D0320F"    # oscillation 23040=on / 0=off
 D_BEEP = "D03130"         # key-beep    0=off / 100=on
-D_TIMER_ACT = "D03110"    # timer active 0=off / 2=on
+D_TIMER_ACT = "D03110"    # timer: 0=off, else hours+1 (2=1h .. 13=12h)
 D_TIMER_MIN = "D03211"    # timer remaining minutes (READ-ONLY countdown)
 
 # Device meta codes (reported only)
@@ -46,8 +46,15 @@ OSC_OFF = 0
 OSC_ON_REPORTED = 23040  # read-back value when oscillating (90 deg)
 BEEP_ON = 100
 BEEP_OFF = 0
-TIMER_ON = 2
+TIMER_ON = 2   # writing D03110=2 = a 1h timer (the device's "just activate" default)
 TIMER_OFF = 0
+# Timer DURATION is encoded directly in D03110: code = hours + 1 (2=1h .. 13=12h),
+# 0 = off. Verified by shadow write + read-back 2026-07-04 (D03110=13 -> D03211=720
+# min; D03211 = 60*(D03110-1)). The remaining-minutes countdown D03211 is read-only;
+# the duration is set only through D03110.
+TIMER_HOURS_MIN = 0    # 0 h = off
+TIMER_HOURS_MAX = 12   # firmware accepts more (24 -> 23h), but the app caps at 12h
+TIMER_CODE_OFFSET = 1  # D03110 = hours + TIMER_CODE_OFFSET  (for hours >= 1)
 
 # Mode presets (D0310C). CX3550 has NO turbo.
 MODE_SLEEP = 17
@@ -81,6 +88,7 @@ RECONNECT_MAX = 300
 
 # Sensor native units
 UNIT_TIMER_MIN = UnitOfTime.MINUTES
+UNIT_TIMER_HOURS = UnitOfTime.HOURS
 UNIT_SIGNAL = SIGNAL_STRENGTH_DECIBELS_MILLIWATT
 UNIT_DURATION = UnitOfTime.SECONDS
 
@@ -91,6 +99,7 @@ __all__ = [
     "D_NAME", "D_TYPE", "D_MODEL", "D_SERIAL", "D_SWVERSION",
     "D_RSSI", "D_RUNTIME", "D_FREE_MEMORY", "D_CONNECT_TYPE",
     "OSC_ON_WRITE", "OSC_OFF", "OSC_ON_REPORTED", "BEEP_ON", "BEEP_OFF", "TIMER_ON", "TIMER_OFF",
+    "TIMER_HOURS_MIN", "TIMER_HOURS_MAX", "TIMER_CODE_OFFSET", "UNIT_TIMER_HOURS",
     "MODE_SLEEP", "MODE_NATURAL", "PRESET_SLEEP", "PRESET_NATURAL",
     "PRESET_MODES", "PRESET_TO_MODE", "MODE_TO_PRESET",
     "SPEED_COUNT",
