@@ -1,6 +1,6 @@
 # Philips Air+ (CX3550/01) for Home Assistant
 
-<img src="brand/logo.png" alt="Philips Air+ integration icon" width="96" height="96">
+<img src="https://raw.githubusercontent.com/Ka3seBr0t/HA_Philips_Air_Plus/main/brand/logo.png" alt="Philips Air+ integration icon" width="96" height="96">
 
 A Home Assistant custom integration for **Philips Air+ cloud-only fans**,
 verified against the **CX3550/01** ("Series 3000" stand fan, Air Matters app).
