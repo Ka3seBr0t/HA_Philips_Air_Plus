@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-07-06
+
+### Fixed
+- Physical / device-side state changes (speed, mode, power set on the unit
+  itself) now sync to Home Assistant within ~30 s. The integration is a pure
+  push model over the AWS IoT device shadow, and the Philips cloud doesn't
+  reliably deliver `shadow/update/documents` pushes for physical changes; a
+  periodic `shadow/get` reconcile poll was added to pull the current reported
+  state. Push remains the primary path; the poll is a safety net.
+
 ## [0.3.1] - 2026-07-04
 
 ### Added

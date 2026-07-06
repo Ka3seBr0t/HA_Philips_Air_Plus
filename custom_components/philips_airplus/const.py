@@ -86,6 +86,14 @@ MODEL_CX3550 = "CX3550/01"
 RECONNECT_MIN = 2
 RECONNECT_MAX = 300
 
+# Reconcile poll: republish shadow/get on this cadence so device-side changes
+# (physical buttons on the unit, or a push missed while reconnecting) surface in HA.
+# The device writes physical changes to its shadow reported state (the Philips app
+# sees them) but doesn't reliably push /update/documents to us; a periodic get pulls
+# the current reported state. ponytail: 30s reconcile knob — raise if laggy, lower to
+# spare the cloud. Publishing get on the live socket is cheap (no re-auth, no new URL).
+REFRESH_INTERVAL = 30
+
 # Sensor native units
 UNIT_TIMER_MIN = UnitOfTime.MINUTES
 UNIT_TIMER_HOURS = UnitOfTime.HOURS
@@ -107,6 +115,6 @@ __all__ = [
     "TOPIC_UPDATE", "TOPIC_UPDATE_ACCEPTED", "TOPIC_UPDATE_REJECTED",
     "TOPIC_UPDATE_DOCUMENTS",
     "MANUFACTURER", "MODEL_CX3550",
-    "RECONNECT_MIN", "RECONNECT_MAX",
+    "RECONNECT_MIN", "RECONNECT_MAX", "REFRESH_INTERVAL",
     "UNIT_TIMER_MIN", "UNIT_SIGNAL", "UNIT_DURATION",
 ]

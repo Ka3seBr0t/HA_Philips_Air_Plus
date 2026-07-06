@@ -1,18 +1,23 @@
-"""DataUpdateCoordinator for one Philips Air+ fan (push model, no polling).
+"""DataUpdateCoordinator for one Philips Air+ fan (push primary, reconcile poll).
 
 The device pushes shadow deltas over the persistent MQTT connection; the
 DeviceConnection feeds ``reported`` here from the paho thread via
 ``threadsafe_set_data``. Entities are ``CoordinatorEntity`` with
 ``should_poll=False`` and read ``coordinator.data``.
+
+A periodic ``update_interval`` republishes ``shadow/get`` so device-side
+changes (physical buttons on the unit, or a push missed while reconnecting)
+surface in HA — the push path is primary, the poll is a reconcile safety net.
 """
 from __future__ import annotations
 
 import logging
+from datetime import timedelta
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import D_CONNECT_TYPE
+from .const import D_CONNECT_TYPE, REFRESH_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -25,7 +30,7 @@ class PhilipsAirplusCoordinator(DataUpdateCoordinator):
             hass,
             _LOGGER,
             name=f"philips_airplus_{device_id}",
-            # No update_interval: pure push model (cloud_push).
+            update_interval=timedelta(seconds=REFRESH_INTERVAL),  # reconcile poll (push is primary)
         )
         self.device_id = device_id
         self.device_info = device_info  # deviceList device_info dict (name, mac, modelid, ...)
@@ -34,7 +39,10 @@ class PhilipsAirplusCoordinator(DataUpdateCoordinator):
         self.data: dict = {}
 
     async def async_update_data(self) -> dict:
-        """Return the latest reported state (set by the push path, not by polling)."""
+        """Reconcile: ask the shadow for its current reported state. The reply lands
+        async on /get/accepted via threadsafe_set_data; return what's cached now."""
+        if self.connected:
+            self.connection.request_shadow_get()
         return self.data
 
     @property

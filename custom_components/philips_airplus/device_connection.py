@@ -162,9 +162,16 @@ class DeviceConnection:
         ):
             client.subscribe(tp, qos=1)
         # Pull the current state immediately.
-        client.publish(self._topic_get, "{}", qos=1)
+        self.request_shadow_get()
         self._connect_event.set()
         self.coordinator.set_connection_state(connected=True)
+
+    def request_shadow_get(self) -> None:
+        """Publish shadow/get to pull current reported state. paho publish is
+        thread-safe/non-blocking; callable from the HA loop or the paho thread."""
+        if self._client is None or not self._connected:
+            return
+        self._client.publish(self._topic_get, "{}", qos=1)
 
     def _on_connect_fail(self, client, userdata):
         _LOGGER.warning("Philips Air+ %s: paho connect_fail", self.device_id)
