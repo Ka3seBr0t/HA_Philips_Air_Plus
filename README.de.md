@@ -1,4 +1,4 @@
-# Philips Air+ (CX3550/01) für Home Assistant
+# Philips Air+ Ventilatoren für Home Assistant
 
 [🇬🇧 English](README.md) | 🇩🇪 Deutsch
 
@@ -95,6 +95,28 @@ Traffic-Mitschnitten rausgesucht werden müsste.
 Alle Steuer-Writes sind an einem physischen CX3550/01 verifiziert: An/Aus,
 Stufe 1/2/3, Schlafen-/Natürlich-Presets, Oszillation, Piepton, Timer An/Aus
 und -Dauer.
+
+### Philips PureProtect Pet 3000 Series AC3360/11
+
+Die Integration unterstützt auch den **Philips AC3360/11 PureProtect Pet
+3000 Series** (Gerätetyp **LavenderLite**). Die Unterstützung dieses Modells
+basiert auf Reverse Engineering an einem realen Gerät (Firmware 0.2.1) und ist
+noch nicht so umfassend validiert wie die des CX3550/01.
+
+Unterstützte AC3360-Funktionen:
+
+- Ein/Aus sowie fünf benannte Presets in Home Assistant und ein fünfstufiger Prozentregler für Apple Home auf derselben Fan-Entität
+- Haustiersperre, Displayhelligkeit (Hell / Niedrig / Aus) und Piepton
+- PM2.5-, Allergenindex-, roher Gasindex-, Temperatur- und Luftfeuchtigkeitssensoren
+
+Presets und Prozentregler steuern dieselben fünf Modi über D0310C und bleiben
+beim Auslesen synchron. „Stark“ setzt D0310C=16 (den Eco-Wert des Geräts);
+D0310D bleibt ein vom Gerät gemeldeter Zustand und wird nie geschrieben.
+
+Der AC3360 bietet keine Oszillation. Licht-, Stimmungslicht- und
+Luftqualitätslicht-Funktionen sind noch nicht zugeordnet und werden nicht
+unterstützt. Der Gasindex wird ohne physikalische Konzentrationseinheit
+angezeigt; der verifizierte Rohwert `1` erscheint als `L1`.
 
 ## Fehlerbehebung
 

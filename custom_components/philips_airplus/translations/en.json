@@ -48,17 +48,45 @@
             }
           }
         }
+      },
+      "ac3360": {
+        "state_attributes": {
+          "preset_mode": {
+            "state": {
+              "auto": "Auto",
+              "sleep": "Sleep",
+              "low": "Low",
+              "medium": "Medium",
+              "high": "High",
+              "eco": "Eco",
+              "turbo": "Turbo",
+              "pet_hair_boost": "Pet Hair Boost"
+            }
+          }
+        }
+      }
+    },
+    "select": {
+      "display_brightness": {
+        "name": "Display brightness",
+        "options": { "off": "Off", "low": "Low", "bright": "Bright" }
       }
     },
     "switch": {
       "beep": { "name": "Key beep" },
-      "timer": { "name": "Timer" }
+      "timer": { "name": "Timer" },
+      "pet_lock": { "name": "Pet lock" }
     },
     "sensor": {
       "timer_remaining": { "name": "Timer remaining" },
       "rssi": { "name": "Signal strength" },
       "runtime": { "name": "Uptime" },
-      "free_memory": { "name": "Free memory" }
+      "free_memory": { "name": "Free memory" },
+      "pm25": { "name": "PM2.5" },
+      "allergen_index": { "name": "Allergen index" },
+      "gas_index": { "name": "Gas index" },
+      "temperature": { "name": "Temperature" },
+      "humidity": { "name": "Humidity" }
     },
     "number": {
       "timer_hours": { "name": "Timer duration" }

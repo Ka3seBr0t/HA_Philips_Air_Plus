@@ -1,4 +1,4 @@
-# Philips Air+ (CX3550/01) for Home Assistant
+# Philips Air+ fans for Home Assistant
 
 🇬🇧 English | [🇩🇪 Deutsch](README.de.md)
 
@@ -88,6 +88,46 @@ captures.
 
 All control writes are verified against a physical CX3550/01: power, speed
 1/2/3, sleep/natural presets, oscillate, beep, timer on/off and duration.
+
+### Philips PureProtect Pet 3000 Series AC3360/11
+
+The integration also supports the **Philips AC3360/11 PureProtect Pet 3000
+Series** (device type **LavenderLite**). This model's support is based on
+real-device reverse engineering (firmware 0.2.1) and has not received the same
+full validation as CX3550/01.
+
+Supported AC3360 functionality:
+
+- Power, eight named fan presets in Home Assistant, and a fine percentage slider on the same fan entity
+- Pet lock, display brightness (bright / low / off), and beep
+- PM2.5, allergen index, raw gas index, temperature, and humidity sensors
+
+The presets and percentage control use the same D0310C state, so their
+readback stays synchronized. Slider points are 1/10/20/35/50/60/85/100, where
+1% selects Auto and 0% turns the fan off. D0310D remains device-reported state
+and is never written.
+
+Measured power on an AC3360/11 test unit:
+
+| Mode | Measured power |
+| --- | ---: |
+| Ruhemodus / Sleep | 3,0 W |
+| Niedrig / Low | 5,2 W |
+| Mitte / Medium | 9,8 W |
+| Hoch / High | 18,0 W |
+| Öko / Eco | 27,0 W |
+| Turbo | 51,0 W |
+| Fellhaar-Boost / Pet Hair Boost | 73,9 W |
+
+These are real measurements from an AC3360/11 test unit, not official Philips
+specifications. Results may vary slightly with the unit, mains voltage, filter
+condition, and operating conditions. Auto is omitted because its power draw
+changes dynamically.
+
+AC3360 does not expose oscillation. Its light, mood-light, and air-quality-light
+features are currently unmapped and are not supported. The gas index is shown
+without a physical concentration unit; the verified raw value `1` is displayed
+as `L1`.
 
 ## Troubleshooting
 

@@ -48,17 +48,45 @@
             }
           }
         }
+      },
+      "ac3360": {
+        "state_attributes": {
+          "preset_mode": {
+            "state": {
+              "auto": "Auto",
+              "sleep": "Ruhemodus",
+              "low": "Niedrig",
+              "medium": "Mitte",
+              "high": "Hoch",
+              "eco": "Öko",
+              "turbo": "Turbo",
+              "pet_hair_boost": "Fellhaar-Boost"
+            }
+          }
+        }
+      }
+    },
+    "select": {
+      "display_brightness": {
+        "name": "Displayhelligkeit",
+        "options": { "off": "Aus", "low": "Niedrig", "bright": "Hell" }
       }
     },
     "switch": {
       "beep": { "name": "Piepton" },
-      "timer": { "name": "Timer" }
+      "timer": { "name": "Timer" },
+      "pet_lock": { "name": "Haustiersperre" }
     },
     "sensor": {
       "timer_remaining": { "name": "Timer-Restzeit" },
       "rssi": { "name": "Signalstärke" },
       "runtime": { "name": "Laufzeit" },
-      "free_memory": { "name": "Freier Speicher" }
+      "free_memory": { "name": "Freier Speicher" },
+      "pm25": { "name": "PM2.5" },
+      "allergen_index": { "name": "Allergenindex" },
+      "gas_index": { "name": "Gasindex" },
+      "temperature": { "name": "Temperatur" },
+      "humidity": { "name": "Luftfeuchtigkeit" }
     },
     "number": {
       "timer_hours": { "name": "Timer-Dauer" }

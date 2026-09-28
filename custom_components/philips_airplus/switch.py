@@ -21,10 +21,12 @@ from .const import (
     BEEP_OFF,
     BEEP_ON,
     D_BEEP,
+    D_PET_LOCK,
     D_TIMER_ACT,
     DOMAIN,
     MANUFACTURER,
     MODEL_CX3550,
+    MODEL_AC3360,
     TIMER_OFF,
     TIMER_ON,
 )
@@ -36,7 +38,13 @@ async def async_setup_entry(
 ) -> None:
     store = hass.data[DOMAIN][entry.entry_id]
     for coordinator in store["coordinators"].values():
-        async_add_entities([PhilipsAirplusBeepSwitch(coordinator), PhilipsAirplusTimerSwitch(coordinator)])
+        modelid = (coordinator.device_info or {}).get("modelid")
+        entities = [PhilipsAirplusBeepSwitch(coordinator)]
+        if modelid != MODEL_AC3360:
+            entities.append(PhilipsAirplusTimerSwitch(coordinator))
+        if modelid == MODEL_AC3360:
+            entities.append(PhilipsAirplusPetLockSwitch(coordinator))
+        async_add_entities(entities)
 
 
 class _AirplusSwitch(CoordinatorEntity, SwitchEntity):
@@ -115,3 +123,23 @@ class PhilipsAirplusTimerSwitch(_AirplusSwitch):
 
     async def async_turn_off(self, **kwargs) -> None:
         await self.coordinator.async_set_desired({D_TIMER_ACT: TIMER_OFF})
+
+
+class PhilipsAirplusPetLockSwitch(_AirplusSwitch):
+    """Pet lock (D03103) for the AC3360."""
+
+    _attr_translation_key = "pet_lock"
+
+    def __init__(self, coordinator: PhilipsAirplusCoordinator) -> None:
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{coordinator.device_id}_pet_lock"
+
+    @property
+    def is_on(self) -> bool:
+        return self._int(D_PET_LOCK) == 1
+
+    async def async_turn_on(self, **kwargs) -> None:
+        await self.coordinator.async_set_desired({D_PET_LOCK: 1})
+
+    async def async_turn_off(self, **kwargs) -> None:
+        await self.coordinator.async_set_desired({D_PET_LOCK: 0})

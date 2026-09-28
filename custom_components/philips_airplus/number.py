@@ -25,6 +25,7 @@ from .const import (
     DOMAIN,
     MANUFACTURER,
     MODEL_CX3550,
+    MODEL_AC3360,
     TIMER_CODE_OFFSET,
     TIMER_HOURS_MAX,
     TIMER_HOURS_MIN,
@@ -39,7 +40,8 @@ async def async_setup_entry(
 ) -> None:
     store = hass.data[DOMAIN][entry.entry_id]
     for coordinator in store["coordinators"].values():
-        async_add_entities([PhilipsAirplusTimerNumber(coordinator)])
+        if (coordinator.device_info or {}).get("modelid") != MODEL_AC3360:
+            async_add_entities([PhilipsAirplusTimerNumber(coordinator)])
 
 
 class PhilipsAirplusTimerNumber(CoordinatorEntity, NumberEntity):
