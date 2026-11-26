@@ -1,6 +1,7 @@
 """Diagnostics support for Philips Air+.
 
-Redacts the account user_id and device-identifying fields (DeviceId, ProductId,
+Redacts the account user_id, email (also embedded in the entry title), the
+public pairing IP and device-identifying fields (device_id, DeviceId, ProductId,
 serial) from the downloaded diagnostic dumps. The SigV4 WSS URLs are not stored
 in the integration (they are single-use and fetched on demand), so they never
 appear in diagnostics.
@@ -24,6 +25,10 @@ TO_REDACT = {
 }
 # Keys inside the shadow `reported` payload to mask.
 TO_REDACT_REPORTED = {"DeviceId", "ProductId", "D01S0D", "D01S03", "registration_id"}
+# Keys inside the deviceList `device_info` dict to mask. `activate_ip` is the
+# user's public IP at pairing time; `device_id` is the AWS thing name.
+TO_REDACT_DEVICE_INFO = {"mac", "device_id", "activate_ip", "product_id"}
+REDACTED = "**REDACTED**"
 
 
 async def async_get_config_entry_diagnostics(
@@ -34,19 +39,20 @@ async def async_get_config_entry_diagnostics(
     coordinators = store.get("coordinators", {})
     data: dict[str, Any] = {
         "entry": {
-            "title": entry.title,
-            "unique_id": entry.unique_id,
+            # The title embeds the account email ("Philips Air+ (<email>)").
+            "title": REDACTED,
+            "unique_id": REDACTED,
             "data": async_redact_data(dict(entry.data), TO_REDACT),
         },
         "devices": [],
     }
-    for device_id, coordinator in coordinators.items():
+    for index, coordinator in enumerate(coordinators.values()):
         data["devices"].append(
             {
-                "device_id": device_id,
+                "device_id": f"device_{index}",
                 "connected": coordinator.connected,
                 "device_available": coordinator.device_available,
-                "device_info": async_redact_data(coordinator.device_info or {}, {"mac"}),
+                "device_info": async_redact_data(coordinator.device_info or {}, TO_REDACT_DEVICE_INFO),
                 "reported": async_redact_data(coordinator.data or {}, TO_REDACT_REPORTED),
             }
         )
@@ -81,15 +87,16 @@ async def async_get_device_diagnostics(
     entities = [
         {
             "entity_id": e.entity_id,
-            "unique_id": e.unique_id,
+            # unique_id is "<device_id>_<suffix>" -> keep only the suffix.
+            "unique_id": e.unique_id.rsplit("_", 1)[-1] if e.unique_id else None,
             "disabled": e.disabled_by is not None,
         }
         for e in ent_reg.entities.get_entries_for_device_id(device.id)
     ]
     return {
-        "device_id": device_id,
+        "device_id": REDACTED,
         "connected": coordinator.connected,
-        "device_info": async_redact_data(coordinator.device_info or {}, {"mac"}),
+        "device_info": async_redact_data(coordinator.device_info or {}, TO_REDACT_DEVICE_INFO),
         "reported": async_redact_data(coordinator.data or {}, TO_REDACT_REPORTED),
         "entities": entities,
     }

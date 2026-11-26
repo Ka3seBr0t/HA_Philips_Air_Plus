@@ -18,6 +18,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .const import D_CONNECT_TYPE, REFRESH_INTERVAL
+from .dcode_diff import diff_reported, format_changes
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -38,7 +39,7 @@ class PhilipsAirplusCoordinator(DataUpdateCoordinator):
         self.connected = False
         self.data: dict = {}
 
-    async def async_update_data(self) -> dict:
+    async def _async_update_data(self) -> dict:
         """Reconcile: ask the shadow for its current reported state. The reply lands
         async on /get/accepted via threadsafe_set_data; return what's cached now."""
         if self.connected:
@@ -67,7 +68,17 @@ class PhilipsAirplusCoordinator(DataUpdateCoordinator):
     # ---- push entry point (called from the HA loop by DeviceConnection) ----
     def threadsafe_set_data(self, reported: dict) -> None:
         """Set the latest reported state and notify entities. Runs on the HA loop."""
-        self.data = reported or {}
+        reported = reported or {}
+        if _LOGGER.isEnabledFor(logging.DEBUG):
+            model = (self.device_info or {}).get("modelid", "?")
+            if not self.data and reported:
+                # First snapshot: dump everything once as the baseline for the sweep.
+                _LOGGER.debug("D-code snapshot [%s]: %s", model, format_changes(diff_reported({}, reported)))
+            else:
+                changes = diff_reported(self.data, reported)
+                if changes:
+                    _LOGGER.debug("D-code change [%s]: %s", model, format_changes(changes))
+        self.data = reported
         self.last_update_success = True
         self.async_update_listeners()
 

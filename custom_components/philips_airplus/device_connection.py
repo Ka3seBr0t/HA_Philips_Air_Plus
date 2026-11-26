@@ -16,11 +16,11 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-import ssl
 from threading import Event
 from urllib.parse import urlparse
 
 import paho.mqtt.client as mqtt
+from homeassistant.util.ssl import client_context
 
 from . import airmatters_auth as auth
 from .const import (
@@ -90,7 +90,9 @@ class DeviceConnection:
             clean_session=True,
             reconnect_on_failure=False,   # we manage reconnect (URL is single-use)
         )
-        client.tls_set(cert_reqs=ssl.CERT_REQUIRED, tls_version=ssl.PROTOCOL_TLS)
+        # HA's shared, pre-built client SSL context (verifies certs). paho's own
+        # tls_set() loads the CA store synchronously and blocks the event loop.
+        client.tls_set_context(client_context())
 
         # paho adds an Origin header by default; AWS IoT rejects unknown headers,
         # so strip it (mirrors the verified control_test scaffold).
