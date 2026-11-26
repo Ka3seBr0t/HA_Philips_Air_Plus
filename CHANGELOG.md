@@ -5,6 +5,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+- The 30 s reconcile poll never ran: the coordinator implemented
+  `async_update_data` instead of `_async_update_data`, so HA logged
+  `NotImplementedError: Update method not implemented` every 30 s and
+  device-side changes (buttons, remote) did not reach HA.
+- Blocking call inside the event loop on connect (`load_default_certs` /
+  `set_default_verify_paths` via paho's `tls_set()`); the MQTT client now uses
+  HA's shared SSL client context (`homeassistant.util.ssl.client_context()`).
+- Diagnostics leaked personal data: the account email (embedded in the entry
+  title), the entry unique_id, the public IP at pairing time (`activate_ip`),
+  `device_id` and `product_id`. All are now redacted; entity unique_ids are
+  reduced to their suffix.
+
+### Added
+- Debug logging of every D-code change (`D-code change [CX3550/01]: D0310D: 1 -> 2`)
+  plus a one-time baseline snapshot, to make mapping other models easy: enable
+  debug logging, step through each function in the Philips app, download the
+  log. Noisy keys (uptime, RSSI, heap) are skipped; identifying keys (DeviceId,
+  ProductId, serial, device name) are masked.
+- Unit tests (`tests/`) and a pytest CI job; CI actions moved to Node 24 versions.
+
 ## [0.3.2] - 2026-07-06
 
 ### Fixed
